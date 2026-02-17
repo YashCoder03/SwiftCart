@@ -43,6 +43,6 @@ public class UserEntity {
     }
 
     @Column(nullable = false)
-    private Instant createdAt = Instant.now();;
+    private Instant createdAt = Instant.now();
     
 }
