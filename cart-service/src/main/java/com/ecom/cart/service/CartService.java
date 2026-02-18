@@ -3,12 +3,10 @@ package com.ecom.cart.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ecom.cart.dto.CartItemRequest;
-import com.ecom.cart.repository.CartRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,9 +21,11 @@ public class CartService {
         return "Cart : " + userId;
     }
  
-    public void addCart(String userId,CartItemRequest cartItemRequest){
+    public void addCart(String userId, CartItemRequest cartItemRequest){
 
         String key = this.getCartKey(userId);
+        System.out.println(cartItemRequest.toString());
+
 
         List<CartItemRequest> list = (List<CartItemRequest>) redisTemplate.opsForValue().get(key);
 
@@ -50,6 +50,8 @@ public class CartService {
         String key = this.getCartKey(userId);
 
         List<CartItemRequest> list = (List<CartItemRequest>) redisTemplate.opsForValue().get(key);
+
+        System.out.println(list.toString());
 
         return list;
     }

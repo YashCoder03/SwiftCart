@@ -28,4 +28,16 @@ public class InventoryService {
         Boolean check = inventoryRepository.existsByProductId(productId);
         return check;
     }
+
+    public void reduceStock(UUID productId,Integer qty){
+        
+        InventoryEntity inventoryEntity = inventoryRepository.findByProductId(productId);
+        inventoryEntity.reducesQty(qty);
+
+        inventoryRepository.save(inventoryEntity);
+    }
+
+    public void removeStock(UUID productId){
+        inventoryRepository.deleteAll();
+    }
 }

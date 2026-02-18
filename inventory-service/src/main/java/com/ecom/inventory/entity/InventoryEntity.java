@@ -33,6 +33,10 @@ public class InventoryEntity {
         this.quantity = quantity;
     }
 
+    public void reducesQty(Integer qty){
+        this.quantity -= qty;
+    }
+
     
     
 }

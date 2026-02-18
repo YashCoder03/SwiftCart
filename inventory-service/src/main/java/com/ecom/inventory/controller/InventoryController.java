@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,5 +33,18 @@ public class InventoryController {
         System.out.println(productId);
         Boolean isProductInStock = inventoryService.isInStockService(productId);
         return ResponseEntity.ok(isProductInStock);
+    }
+
+    @PostMapping("/{productId}/{qty}")
+    private ResponseEntity<String> reduceStock(@PathVariable UUID productId,@PathVariable Integer qty){
+        inventoryService.reduceStock(productId,qty);
+        return ResponseEntity.ok("");
+    }
+
+    @DeleteMapping("/{productId}")
+    private ResponseEntity<String> removeStock(@PathVariable UUID productId){
+        inventoryService.removeStock(productId);
+        return ResponseEntity.ok("Stock Removed");
+
     }
 }
