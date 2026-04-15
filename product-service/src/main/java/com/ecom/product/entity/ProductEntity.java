@@ -3,8 +3,6 @@ package com.ecom.product.entity;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import javax.annotation.processing.Generated;
-
 import com.ecom.product.dto.ProductRequest;
 
 import jakarta.persistence.Column;

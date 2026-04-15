@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.order.order.dto.OrderDTO;
-import com.order.order.entity.OrderEntity;
 import com.order.order.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,20 +24,20 @@ public class OrderController {
     
     private final OrderService orderService;
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<OrderDTO> createOrder(@PathVariable String userId){
+    @PostMapping()
+    public ResponseEntity<OrderDTO> createOrder(@RequestHeader("X-User-Id") String userId){
 
-        OrderEntity order = orderService.createOrder(userId);
+        OrderDTO order = orderService.createOrder(userId);
         return ResponseEntity.ok(order);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<OrderDTO>> getAllOrder(@PathVariable UUID userId){
-        List<OrderDTO> allOrders = orderService.getAllOrders(userId);
+    @GetMapping()
+    public ResponseEntity<List<OrderDTO>> getAllOrder(@RequestHeader("X-User-Id") String userId){
+        List<OrderDTO> allOrders = orderService.getAllOrders(UUID.fromString(userId));
         return ResponseEntity.ok(allOrders);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping()
     public ResponseEntity<String> deleteAllOrder(){
         orderService.deleteAllOrder();
         return ResponseEntity.ok("Deleted All Orders");

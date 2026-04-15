@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.order.order.client.CartClient;
@@ -16,6 +17,7 @@ import com.order.order.dto.OrderItemDTO;
 import com.order.order.entity.OrderEntity;
 import com.order.order.entity.OrderItemEntity;
 import com.order.order.entity.OrderStatus;
+import com.order.order.event.OrderEvent;
 import com.order.order.repository.OrderRepository;
 
 import jakarta.transaction.Transactional;
@@ -29,11 +31,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartClient cartClient;
     private final InventoryClient inventoryClient;
+    private final KafkaTemplate<String,OrderEvent> kafkaTemplate;
 
     @Transactional
-    public OrderDTO  createOrder(String userId){
+    public OrderDTO createOrder(String userId){
 
-        List<CartItem> cart = cartClient.getCart(userId);
+        List<CartItem> cart = cartClient.getCart();
 
         if(cart.isEmpty()){
             throw new RuntimeException("Cart is Empty");
@@ -70,6 +73,10 @@ public class OrderService {
 
         OrderEntity saved = orderRepository.save(order);
         cartClient.deleteCart(userId);
+
+        OrderEvent event = new OrderEvent(saved.getId(),saved.getUserId(),saved.getTotalAmount());
+        kafkaTemplate.send("order-created-topic",event);
+
 
         return convertToDTO(saved);
 

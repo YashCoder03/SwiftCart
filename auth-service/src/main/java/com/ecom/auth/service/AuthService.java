@@ -41,7 +41,7 @@ public class AuthService {
         
         
         if(result) {
-            String token = jwtUtil.generateToken(loginRequest.getEmail(), userEntity.getRole());
+            String token = jwtUtil.generateToken(loginRequest.getEmail(), userEntity.getRole(), userEntity.getId().toString());
             return token;
         }
         else{
