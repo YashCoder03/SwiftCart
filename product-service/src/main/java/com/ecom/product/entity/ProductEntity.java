@@ -38,10 +38,10 @@ public class ProductEntity {
     }
     
     public ProductEntity(ProductRequest productRequest){
-        name = productRequest.getName(); 
-        price = productRequest.getPrice(); 
-        description = productRequest.getDescription(); 
-        category = productRequest.getCategory(); 
+        this.name = productRequest.getName();
+        this.price = productRequest.getPrice();
+        this.description = productRequest.getDescription();
+        this.category = productRequest.getCategory();
     }
 
 }
